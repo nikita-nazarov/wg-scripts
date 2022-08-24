@@ -11,7 +11,7 @@ source globals.sh
 #   Peer's public key
 #######################################
 function remove_peer() {
-    # sudo wg set $WG_INTERFACE_NAME peer $1 remove
+    sudo wg set $WG_INTERFACE_NAME peer $1 remove
     remove_peer_from_config $1
 }
 
@@ -39,7 +39,6 @@ function remove_peer_from_config() {
 
         if [[ "$line" == *"$1"* ]]
         then
-            echo "$1"
             line_number_to_delete_from=$last_peer_line_number
         fi
         ((line_number++))
@@ -54,40 +53,54 @@ function remove_peer_from_config() {
     then 
         echo "Failed to find the peer key in the wireguard interface config"
     else 
-        sed "$line_number_to_delete_from,$line_number_to_delete_to d" $WG_CONFIG_PATH
+        sed -i "$line_number_to_delete_from,$line_number_to_delete_to d" $WG_CONFIG_PATH
     fi
 }
 
+#######################################
+# Displays help message
+# Globals:
+#   USAGE_MESSAGE
+#######################################
 function help() {
     echo "This script removes a peer from a running wireguard interface as well as deletes it from the interface config."
+	echo "$USAGE_MESSAGE"
+	echo "Example 1: ./remove-peer.sh mypeer"
+    echo "If a peer name is passed, the script will also delete the peer config directory."
+	echo "Example 2: ./remove-peer.sh -k xzfaIGOdpy57GI8EulgGjJNP7jklvoUBGiQVbVIesQk="
 }
+
+USAGE_MESSAGE="Usage: ./remove-peer.sh [PEER_NAME] [-k, --key PEER_PUBLIC_KEY]"
+INFO_MESSAGE="Try ./remove-peer.sh -h for more information."
 
 if [ $# -eq 0 ]
 then
-	echo "Usage: ./remove-peer.sh [PEER_NAME] [-k, --key PEER_PUBLIC_KEY]"
-    echo "Try ./remove-peer.sh -h for more information."
+	echo "$USAGE_MESSAGE"
+    echo "$INFO_MESSAGE"
 else
     while [[ $# -gt 0 ]]; do
         case $1 in
-            -h,--help)
+            -h|--help)
                 help
                 exit;;
             -k|--key)
                 if [ -z "$2" ]
                 then
                     echo "You have to provide a public key as the second argument."
-                    echo "Try ./remove-peer.sh -h for more information."
+                    echo "$INFO_MESSAGE"
                 else
                     remove_peer $2
                 fi
                 exit;;
             *)
-                public_key=$(cat $PEER_CONFIG_DIR$1/publickey 2>/dev/null)
+                peer_config_path=$PEER_CONFIG_DIR$1
+                public_key=$(cat $peer_config_path/publickey 2>/dev/null)
                 if [ -z "$public_key" ]
                 then
                     echo "A client with name '$1' does not exist."
                 else
                     remove_peer $public_key
+                    rm -r $peer_config_path
                 fi
                 exit;;
         esac
