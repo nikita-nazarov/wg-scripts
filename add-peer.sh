@@ -2,6 +2,9 @@
 
 source globals.sh
 
+# Default peer ip that will be added if no peers are listed in the wireguard interface config
+FALLBACK_PEER_IP="10.0.0.2/32"
+
 #######################################
 # Adds a peer to a running wireguard interface, updates the interface config file 
 # and creates a peer config file.
@@ -110,9 +113,35 @@ PublicKey = $2
 EOF
 }
 
+#######################################
+# Displays help message
+# Globals:
+#   USAGE_MESSAGE
+#   PEER_CONFIG_DIR
+#######################################
+function help() {
+    echo "This script adds a peer to a running wireguard interface and adds it to the interface config.
+It also creates keys and a peer config file in the '$PEER_CONFIG_DIR' directory."
+	echo "$USAGE_MESSAGE"
+	echo "Example: ./add-peer.sh mypeer"
+}
+
+USAGE_MESSAGE="Usage: ./add-peer.sh [PEER_NAME]"
+INFO_MESSAGE="Try ./add-peer.sh -h for more information."
+
 if [ $# -eq 0 ]
 then
-	echo "You must pass a client name as the first argument"
+    echo "$USAGE_MESSAGE"
+    echo "$INFO_MESSAGE"
 else    
-    add_peer $1
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                help
+                exit;;
+            *)
+                add_peer $1
+                exit;;
+        esac
+    done
 fi

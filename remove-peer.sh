@@ -46,7 +46,7 @@ function remove_peer_from_config() {
 
     if [ -z $line_number_to_delete_to ]
     then
-        line_number_to_delete_to=$((line_number - 1))
+        line_number_to_delete_to=$line_number
     fi
 
     if [ -z "$line_number_to_delete_from" ]; 
@@ -61,12 +61,13 @@ function remove_peer_from_config() {
 # Displays help message
 # Globals:
 #   USAGE_MESSAGE
+#   PEER_CONFIG_DIR
 #######################################
 function help() {
-    echo "This script removes a peer from a running wireguard interface as well as deletes it from the interface config."
+    echo "This script removes a peer from a running wireguard interface and deletes it from the interface config."
 	echo "$USAGE_MESSAGE"
 	echo "Example 1: ./remove-peer.sh mypeer"
-    echo "If a peer name is passed, the script will also delete the peer config directory."
+    echo "If a peer name is passed, the script will also delete the peer config directory from '$PEER_CONFIG_DIR'."
 	echo "Example 2: ./remove-peer.sh -k xzfaIGOdpy57GI8EulgGjJNP7jklvoUBGiQVbVIesQk="
 }
 
