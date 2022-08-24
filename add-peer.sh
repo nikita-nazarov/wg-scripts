@@ -120,7 +120,7 @@ EOF
 #   PEER_CONFIG_DIR
 #######################################
 function help() {
-    echo "This script adds a peer to a running wireguard interface and adds it to the interface config.
+    echo "This script adds a peer to the running wireguard interface and adds it to the interface config.
 It also creates keys and a peer config file in the '$PEER_CONFIG_DIR' directory."
 	echo "$USAGE_MESSAGE"
 	echo "Example: ./add-peer.sh mypeer"

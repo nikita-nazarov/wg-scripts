@@ -64,7 +64,7 @@ function remove_peer_from_config() {
 #   PEER_CONFIG_DIR
 #######################################
 function help() {
-    echo "This script removes a peer from a running wireguard interface and deletes it from the interface config."
+    echo "This script removes a peer from the running wireguard interface and deletes it from the interface config."
 	echo "$USAGE_MESSAGE"
 	echo "Example 1: ./remove-peer.sh mypeer"
     echo "If a peer name is passed, the script will also delete the peer config directory from '$PEER_CONFIG_DIR'."
