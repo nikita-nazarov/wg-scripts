@@ -3,7 +3,7 @@
 source globals.sh
 
 #######################################
-# Removes a peer from the wireguard interface and deletes its 
+# Removes a peer from the WireGuard interface and deletes its 
 # entry from the config file.
 # Globals:
 #   WG_INTERFACE_NAME
@@ -16,7 +16,7 @@ function remove_peer() {
 }
 
 #######################################
-# Removes a peer from the wireguard interface config file.
+# Removes a peer from the WireGuard interface config file.
 # Globals:
 #   WG_CONFIG_PATH
 # Arguments:
@@ -51,20 +51,20 @@ function remove_peer_from_config() {
 
     if [ -z "$line_number_to_delete_from" ]; 
     then 
-        echo "Failed to find the peer key in the wireguard interface config"
+        echo "Failed to find the peer key in the WireGuard interface config"
     else 
         sed -i "$line_number_to_delete_from,$line_number_to_delete_to d" $WG_CONFIG_PATH
     fi
 }
 
 #######################################
-# Displays help message
+# Displays the help message
 # Globals:
 #   USAGE_MESSAGE
 #   PEER_CONFIG_DIR
 #######################################
 function help() {
-    echo "This script removes a peer from the running wireguard interface and deletes it from the interface config."
+    echo "This script removes a peer from the running WireGuard interface and deletes it from the interface config."
 	echo "$USAGE_MESSAGE"
 	echo "Example 1: ./remove-peer.sh mypeer"
     echo "If a peer name is passed, the script will also delete the peer config directory from '$PEER_CONFIG_DIR'."

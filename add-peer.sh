@@ -2,11 +2,11 @@
 
 source globals.sh
 
-# Default peer ip that will be added if no peers are listed in the wireguard interface config
+# Default peer ip that will be added if no peers are listed in the WireGuard interface config
 FALLBACK_PEER_IP="10.0.0.2/32"
 
 #######################################
-# Adds a peer to a running wireguard interface, updates the interface config file 
+# Adds a peer to a running WireGuard interface, updates the interface config file 
 # and creates a peer config file.
 # Globals:
 #   WG_INTERFACE_NAME
@@ -46,7 +46,7 @@ function add_peer() {
 }
 
 #######################################
-# Gets the highest defined client ip from the wireguard interface config file.
+# Gets the highest defined client ip from the WireGuard interface config file.
 # Globals:
 #   WG_CONFIG_PATH
 # Arguments:
@@ -57,7 +57,7 @@ function get_highest_peer_ip_from_config() {
 }
 
 #######################################
-# Increments the ip address
+# Increments the IP address
 # Arguments:
 #   IP address as string
 #######################################
@@ -99,7 +99,7 @@ EOF
 }
 
 #######################################
-# Fetches the client declaration for the wireguard interface config.
+# Fetches the client declaration for the WireGuard interface config.
 # Arguments:
 #   1 - Peer's ip
 #   2 - Peer's public key
@@ -114,13 +114,13 @@ EOF
 }
 
 #######################################
-# Displays help message
+# Displays the help message
 # Globals:
 #   USAGE_MESSAGE
 #   PEER_CONFIG_DIR
 #######################################
 function help() {
-    echo "This script adds a peer to the running wireguard interface and adds it to the interface config.
+    echo "This script adds a peer to the running WireGuard interface and adds it to the interface config.
 It also creates keys and a peer config file in the '$PEER_CONFIG_DIR' directory."
 	echo "$USAGE_MESSAGE"
 	echo "Example: ./add-peer.sh mypeer"
